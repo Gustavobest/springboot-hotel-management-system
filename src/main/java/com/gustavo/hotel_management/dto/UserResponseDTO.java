@@ -7,6 +7,20 @@ public class UserResponseDTO {
     private String email;
     private String role;
 
+    public UserResponseDTO(Long id, String name, String email, String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+    }
+    public UserResponseDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+
+    public UserResponseDTO() {
+    }
 
     public Long getId() {
         return id;

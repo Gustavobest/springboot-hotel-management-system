@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 
@@ -18,6 +21,9 @@ public class Room {
     @NotNull
     private Double price;
 
+    @OneToMany(mappedBy = "room")
+    private List<Reservation> reservations = new ArrayList<>();
+
     public Room() {
     }
 
@@ -25,6 +31,14 @@ public class Room {
         this.id = id;
         this.price = price;
         this.name = name;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     public long getId() {

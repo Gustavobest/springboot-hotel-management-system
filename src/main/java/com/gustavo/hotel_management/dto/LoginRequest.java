@@ -2,7 +2,9 @@ package com.gustavo.hotel_management.dto;
 
 public class LoginRequest {
 
+
     private String email;
+
     private String password;
 
     public String getPassword() {

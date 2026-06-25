@@ -1,5 +1,7 @@
 package com.gustavo.hotel_management.exception;
+import com.gustavo.hotel_management.dto.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import org.springframework.web.bind.annotation.*;
@@ -22,4 +24,70 @@ public class GlobalExceptionHandler {
 
         return errors; //
     }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleGenericException( Exception ex){
+
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                 .body(new ErrorResponseDTO(
+                         "Unexpect error ocurred",
+                         500
+                 ));
+
+
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserNotFound(UserNotFoundException ex)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDTO(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value()
+                ));
+
+
+    }
+    @ExceptionHandler(RoomNotFoundException.class)
+    public  ResponseEntity<ErrorResponseDTO> handleRoomNotFound(RoomNotFoundException ex)
+    {
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDTO(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value()
+                ));
+    }
+
+    @ExceptionHandler(ReservationNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handlReservacionNotFound(ReservationNotFoundException ex)
+    {
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDTO(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value()
+                ));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
