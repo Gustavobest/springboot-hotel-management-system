@@ -2,8 +2,6 @@ package com.gustavo.hotel_management.service;
 
 import com.gustavo.hotel_management.dto.ReservationRequestDTO;
 import com.gustavo.hotel_management.dto.ReservationResponseDTO;
-import com.gustavo.hotel_management.dto.RoomResponseDTO;
-import com.gustavo.hotel_management.dto.UserResponseDTO;
 import com.gustavo.hotel_management.entity.Reservation;
 import com.gustavo.hotel_management.entity.Room;
 import com.gustavo.hotel_management.entity.User;
@@ -11,12 +9,12 @@ import com.gustavo.hotel_management.exception.ReservationNotFoundException;
 import com.gustavo.hotel_management.exception.RoomNotFoundException;
 import com.gustavo.hotel_management.exception.UserNotFoundException;
 import com.gustavo.hotel_management.mapper.ReservationMapper;
-import com.gustavo.hotel_management.model.ReservationStatus;
 import com.gustavo.hotel_management.repository.ReservationRepository;
 import com.gustavo.hotel_management.repository.RoomRepository;
 import com.gustavo.hotel_management.repository.UserRepository;
 import com.gustavo.hotel_management.specification.ReservationSpecification;
 import com.gustavo.hotel_management.validation.ReservationValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +26,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
+@Slf4j
 @Service
 public class ReservationService {
 
@@ -104,11 +102,14 @@ public class ReservationService {
         LocalDate checkIn = reservationDto.getCheckInDate();
         LocalDate checkOut = reservationDto.getCheckOutDate();
 
+        log.info("Creating reservation for user {} in room {}" ,reservationDto.getUserId(),reservationDto.getRoomId());
         User user = userRepository.findById(reservationDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(reservationDto.getUserId()));
 
         Room room = roomRepository.findById(reservationDto.getRoomId())
                 .orElseThrow(() -> new RoomNotFoundException(reservationDto.getRoomId()));
+
+
 
         reservationValidator.validateDates(checkIn, checkOut);
         reservationValidator.validateAvailabilityForCreate(roomId , checkIn ,checkOut);
@@ -120,13 +121,17 @@ public class ReservationService {
         reservationToSave.setRoom(room);
          reservationToSave.initialize();
         Reservation reservationExist = reservationRepository.save(reservationToSave);
+        log.info("Reservation {} created successfully", reservationExist.getId());
+
         return ReservationMapper.toDTO(reservationExist);
 
     }
     @Transactional
     public void delete(Long id) {
          reservationValidator.validateAvailabilityForExists(id);
+         log.info("Deleting reservation{}", id);
         reservationRepository.deleteById(id);
+        log.info("Reservation {} deleted successfully" , id);
 
     }
     @Transactional(readOnly = true)
@@ -145,7 +150,7 @@ public class ReservationService {
             int size
     ){
         Pageable pageable = PageRequest.of(page, size);
-
+        log.debug("Searchin reservations {} + {}" , userName , roomName  );
         Specification<Reservation> spec = Specification
                 .where(ReservationSpecification.hasUserName(userName))
                 .and(ReservationSpecification.hasRoomName(roomName));

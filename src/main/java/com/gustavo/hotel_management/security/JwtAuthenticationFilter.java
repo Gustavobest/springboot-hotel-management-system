@@ -1,10 +1,10 @@
 package com.gustavo.hotel_management.security;
-
-import com.sun.net.httpserver.HttpServer;
+import org.slf4j.Logger;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
 
@@ -39,15 +39,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
 
+        if(!jwtService.isTokenValid(token)){
+            logger.warn("Token invaliado o expirado");
+            filterChain.doFilter(request , response);
+            return;
+        }
+
         System.out.println("Token Recibido " + token);
 
         String email  = jwtService.extractEmail(token);
-
-        System.out.println("Email del token" + email);
+        logger.info("Autenticando usuario: {}",  email);
+        logger.info("Email del token{} " , email);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-        System.out.println("usuario encontrado " +  userDetails.getUsername());
+        logger.info("usuario encontrado {} ",userDetails.getUsername());
 
 
         UsernamePasswordAuthenticationToken authentication =

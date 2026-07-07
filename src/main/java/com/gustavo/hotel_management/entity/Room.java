@@ -64,4 +64,7 @@ public class Room {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+    public void set() {
+    }
 }

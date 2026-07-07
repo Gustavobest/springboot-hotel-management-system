@@ -66,6 +66,12 @@ public class GlobalExceptionHandler {
                 ));
 
     }
+    @ExceptionHandler(RoomHasReservationsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRoomHasReservations(RoomHasReservationsException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDTO(ex.getMessage(),HttpStatus.CONFLICT.value()));
+    }
+
 
 
 

@@ -26,7 +26,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN') or  hasRole('USER')")
     public ResponseEntity<List<ReservationResponseDTO>> ListAll(){
         return ResponseEntity.ok(

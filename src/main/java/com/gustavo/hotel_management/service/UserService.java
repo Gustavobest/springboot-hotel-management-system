@@ -1,21 +1,22 @@
 package com.gustavo.hotel_management.service;
-
 import com.gustavo.hotel_management.dto.UserRequestDTO;
 import com.gustavo.hotel_management.dto.UserResponseDTO;
 import com.gustavo.hotel_management.entity.User;
 import com.gustavo.hotel_management.exception.UserNotFoundException;
+import com.gustavo.hotel_management.mapper.UserMapper;
 import com.gustavo.hotel_management.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.gustavo.hotel_management.specification.UserSpecification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Slf4j
 @Service
 public class UserService {
 
@@ -32,11 +33,7 @@ public class UserService {
         User userExist = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
-        return new UserResponseDTO(
-                userExist.getId(),
-                userExist.getName(),
-                userExist.getEmail(),
-                userExist.getRole());
+        return  UserMapper.toDTO(userExist);
 
     }
     @Transactional
@@ -50,29 +47,18 @@ public class UserService {
                 passwordEncoder.encode(userDto.getPassword())
         );
         user.setRole(userDto.getRole());
-
+        log.info("Creating user with email:{}", userDto.getEmail());
         User savedUser = userRepository.save(user);
+        log.info("User seccessfully created with ID: {}", savedUser.getId());
 
-
-        return new UserResponseDTO(
-          savedUser.getId(),
-          savedUser.getName(),
-          savedUser.getEmail(),
-          savedUser.getRole()
-        );
+        return UserMapper.toDTO(savedUser);
     }
     @Transactional(readOnly = true)
     public List<UserResponseDTO> findAll(){
 
         return userRepository.findAll()
                 .stream()
-                .map(user -> new UserResponseDTO(
-                        user.getId(),
-                        user.getName(),
-                        user.getEmail(),
-                        user.getRole()
-
-                )).toList();
+                .map(UserMapper::toDTO).toList();
 
     }
     @Transactional
@@ -86,39 +72,63 @@ public class UserService {
         existUser.setRole(userDto.getRole());
 
         User savedUser = userRepository.save(existUser);
-        return  new UserResponseDTO(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getEmail(),
-                savedUser.getRole()
-        );
+        return  UserMapper.toDTO(savedUser);
     }
     @Transactional
     public void deleteUser(Long id) {
 
-        User user = userRepository.findById(id)
+       userRepository.findById(id)
                         .orElseThrow(() ->  new UserNotFoundException(id));
-
+            log.info("Deleting user {}",id);
         userRepository.deleteById(id);
+        log.info("User {} deleted successfully" , id);
     }
     @Transactional(readOnly = true)
     public Page<UserResponseDTO> findAllPaginated(int page  , int size )
     {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable)
-                .map(user -> new UserResponseDTO(
-                        user.getId(),
-                        user.getName(),
-                        user.getEmail(),
-                        user.getRole()
-
-                ));
+                .map(UserMapper::toDTO);
 
 
 
+    }
+    @Transactional(readOnly = true)
+    public Page<UserResponseDTO> searchUsers(String name, int page, int size)
+    {
+        Pageable pageable = PageRequest.of(page,size);
+        log.debug("Searching user {}" , name );
+        Specification<User> spec = Specification.where(UserSpecification.hasName(name));
+        Page<User> users = userRepository.findAll(spec,pageable);
+        return users.map(UserMapper::toDTO);
     }
 
 
 
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -71,6 +71,17 @@ public class UserController {
    {
         return ResponseEntity.ok(userService.findAllPaginated(page,size));
    }
+   @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<UserResponseDTO>> searchUsers(@RequestParam(required = false) String name,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "5") int size){
+
+        return ResponseEntity.ok(
+                userService.searchUsers(name, page,size));
+
+
+   }
 
 
 

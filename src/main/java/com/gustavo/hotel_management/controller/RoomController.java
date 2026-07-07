@@ -71,5 +71,14 @@ public class RoomController {
     {
         return ResponseEntity.ok(roomService.findAllPaginated(page , size));
     }
-
+    @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public ResponseEntity<Page<RoomResponseDTO>> searchRooms(@RequestParam(required = false) String name ,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "5") int size)
+    {
+        return ResponseEntity.ok(
+                roomService.searchRooms(name,page,size)
+        );
+    }
 }
