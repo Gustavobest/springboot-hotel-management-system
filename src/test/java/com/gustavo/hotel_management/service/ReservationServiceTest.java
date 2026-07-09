@@ -15,9 +15,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -83,7 +88,7 @@ public class ReservationServiceTest {
        verify(userRepository).findById(1L);
        verify(roomRepository).findById(1L);
        verify(reservationRepository).save(any(Reservation.class));
-
+       verify(reservationValidator).validateDates(request.getCheckInDate(),request.getCheckOutDate());
 
     }
 
@@ -113,6 +118,7 @@ public class ReservationServiceTest {
 
 
         Reservation reservationExists = new Reservation();
+        reservationExists.setId(2L);
         reservationExists.setUser(user);
         reservationExists.setRoom(room);
         reservationExists.setCheckInDate(request.getCheckInDate());
@@ -137,20 +143,124 @@ public class ReservationServiceTest {
         verify(userRepository).findById(2L);
         verify(roomRepository).findById(2L);
         verify(reservationRepository).save(any(Reservation.class));
-
+        verify(reservationValidator).validateDates(request.getCheckInDate(),request.getCheckOutDate());
+        verify(reservationValidator).validateAvailabilityForUpdate(2L,2L,request.getCheckInDate(),request.getCheckOutDate());
 
     }
 
     @Test
-    void shouldDeleteReservationSuccessfully(){}
+    void shouldDeleteReservationSuccessfully(){
+
+        Long reservationId = 1L;
+
+       reservationService.delete(reservationId);
+
+       verify(reservationValidator).validateAvailabilityForExists(1L);
+
+       verify(reservationRepository).deleteById(1L);
+
+
+    }
     @Test
-    void shouldReturnReservationById(){}
+    void shouldReturnReservationById(){
+
+        User user = new User();
+        user.setName("Gustavo");
+
+        Room room = new Room();
+        room.setName("Suite");
+
+        Reservation reservation = new Reservation();
+        reservation.setId(1L);
+        reservation.setUser(user);
+        reservation.setRoom(room);
+        reservation.setCheckInDate(LocalDate.now());
+        reservation.setCheckOutDate(LocalDate.now().plusDays(2));
+
+        when(reservationRepository.findById(1L)).thenReturn(Optional.of(reservation));
+
+        ReservationResponseDTO response = reservationService.lookFor(1L);
+
+        assertNotNull(response);
+        assertEquals("Gustavo", response.getUserName());
+        assertEquals("Suite", response.getRoomName());
+
+        verify(reservationRepository).findById(1L);
+
+    }
     @Test
-    void shouldReturnAllReservation(){}
+    void shouldReturnAllReservation() {
+
+    User user = new User();
+    user.setName("Gustavo");
+
+    Room room = new Room();
+    room.setName("Suite");
+
+    Reservation reservation = new Reservation();
+    reservation.setId(1L);
+    reservation.setUser(user);
+    reservation.setRoom(room);
+
+    when(reservationRepository.findAll()).thenReturn(List.of(reservation));
+
+    List<ReservationResponseDTO> response = reservationService.ListAll();
+
+    assertNotNull(response);
+    assertEquals(1,response.size());
+    assertEquals("Gustavo",response.get(0).getUserName());
+
+    verify(reservationRepository).findAll();
+    }
     @Test
-    void shouldReturnReservationsPaginated(){}
+    void shouldReturnReservationsPaginated(){
+
+     User user = new User();
+     user.setName("Gustavo");
+
+     Room room = new Room();
+     room.setName("Suite");
+
+     Reservation reservation = new Reservation();
+     reservation.setUser(user);
+     reservation.setRoom(room);
+
+        Page<Reservation> page = new PageImpl<>(List.of(reservation));
+
+        when(reservationRepository.findAll(any(Pageable.class))).thenReturn(page);
+
+        Page<ReservationResponseDTO> response = reservationService.findAllPaginated(0,10);
+
+        assertNotNull(response);
+        assertEquals(1, response.getTotalElements());
+        verify(reservationRepository).findAll(any(Pageable.class));
+
+    }
     @Test
-    void shouldSearchReservationSuccessfully(){}
+    void shouldSearchReservationSuccessfully(){
+
+        User user = new User();
+        user.setName("Gustavo");
+
+        Room room = new Room();
+        room.setName("Suite");
+
+        Reservation reservation = new Reservation();
+        reservation.setUser(user);
+        reservation.setRoom(room);
+
+        Page<Reservation> page = new PageImpl<>(List.of(reservation));
+        when(reservationRepository.findAll(any(Specification.class),any(Pageable.class))).thenReturn(page);
+        Page<ReservationResponseDTO> response = reservationService.searchReservations("Gustavo","Suite",0,10);
+
+        assertNotNull(response);
+        assertEquals(1,response.getTotalElements());
+
+        verify(reservationRepository).findAll(any(Specification.class),any(Pageable.class));
+
+
+
+    }
 
 
 
