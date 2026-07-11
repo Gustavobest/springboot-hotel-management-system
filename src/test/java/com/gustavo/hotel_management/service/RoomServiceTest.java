@@ -105,6 +105,9 @@ public class RoomServiceTest {
 
         RoomResponseDTO response = roomService.editRoom(1L , request);
 
+        assertNotNull(response);
+
+
         verify(roomRepository).findById(1L);
         verify(roomRepository).save(any(Room.class));
 
@@ -146,7 +149,7 @@ public class RoomServiceTest {
 
        Room room = new Room();
        room.setId(1L);
-       room.setName("gustavo");
+       room.setName("Suite");
        room.setPrice(120.0);
 
        Page<Room> page = new PageImpl<>(List.of(room));
@@ -156,7 +159,7 @@ public class RoomServiceTest {
        Page<RoomResponseDTO> response = roomService.findAllPaginated(0,10);
 
        assertEquals(1,response.getTotalElements());
-       assertEquals("gustavo", response.getContent().get(0).getName());
+       assertEquals("Suite", response.getContent().get(0).getName());
 
        verify(roomRepository).findAll(any(Pageable.class));
 

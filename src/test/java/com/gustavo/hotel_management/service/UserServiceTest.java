@@ -72,7 +72,6 @@ class UserServiceTest {
     }
     @Test
     void shouldReturnAllUsers() {
-     //Arranque
         User user = new User();
         user.setId((1L));
         user.setName("Diego");
