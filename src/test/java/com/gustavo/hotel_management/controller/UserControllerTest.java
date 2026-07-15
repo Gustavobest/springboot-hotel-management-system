@@ -96,11 +96,6 @@ public class UserControllerTest
        requestDTO.setPassword("diego123");
        requestDTO.setRole("ADMIN");
 
-       User userExists = new User();
-       userExists.setId(1L);
-       userExists.setName("Gustavo");
-       userExists.setEmail("gustavo@test.com");
-       userExists.setRole("ADMIN");
 
        UserResponseDTO  responseDTO = new UserResponseDTO();
        responseDTO.setId(1L);
@@ -114,7 +109,7 @@ public class UserControllerTest
        mockMvc.perform(
                put("/api/users/1")
                        .contentType(MediaType.APPLICATION_JSON)
-                       .content(objectMapper.writeValueAsString(responseDTO))
+                       .content(objectMapper.writeValueAsString(requestDTO))
 
        ).andExpect(status().isOk())
                .andExpect(jsonPath("$.name").value("Diego"))

@@ -20,11 +20,9 @@ import java.util.List;
 public class RoomController {
 
     private final RoomService roomService;
-    private final ReservationService reservationService;
 
-    public RoomController(RoomService roomService, ReservationService reservationService) {
+    public RoomController(RoomService roomService) {
         this.roomService = roomService;
-        this.reservationService = reservationService;
     }
 
 
