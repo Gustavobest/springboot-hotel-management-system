@@ -158,6 +158,7 @@ public class RoomControllerTest {
                 .andExpect(jsonPath("$.content[0].name").value("Classic"))
                 .andExpect(jsonPath("$.content[0].price").value(100.0));
 
+        verify(roomService).findAllPaginated(0,10);
 
     }
     @Test
