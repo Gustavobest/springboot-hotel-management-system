@@ -226,7 +226,7 @@ src
 Backend Developer (Java | Spring Boot)
 
 LinkedIn:
-(agrega aquí tu perfil)
+www.linkedin.com/in/gustavodiegoq
 
 GitHub:
-(agrega aquí tu GitHub)
+(https://github.com/Gustavobest)
