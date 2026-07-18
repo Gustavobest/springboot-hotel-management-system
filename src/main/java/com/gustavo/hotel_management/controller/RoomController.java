@@ -1,8 +1,6 @@
 package com.gustavo.hotel_management.controller;
-
 import com.gustavo.hotel_management.dto.RoomRequestDTO;
 import com.gustavo.hotel_management.dto.RoomResponseDTO;
-import com.gustavo.hotel_management.service.ReservationService;
 import com.gustavo.hotel_management.service.RoomService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.gustavo.hotel_management.entity.Room;
 
 import java.util.List;
 

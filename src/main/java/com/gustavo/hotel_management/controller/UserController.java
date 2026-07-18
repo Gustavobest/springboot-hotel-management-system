@@ -1,8 +1,6 @@
 package com.gustavo.hotel_management.controller;
-
 import com.gustavo.hotel_management.dto.UserRequestDTO;
 import com.gustavo.hotel_management.dto.UserResponseDTO;
-import com.gustavo.hotel_management.entity.User;
 import com.gustavo.hotel_management.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -26,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    //@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO user)
     {
         UserResponseDTO savedUser = userService.save(user);

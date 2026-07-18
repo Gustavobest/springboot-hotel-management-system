@@ -1,5 +1,4 @@
 package com.gustavo.hotel_management.integration;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gustavo.hotel_management.dto.RoomRequestDTO;
 import com.gustavo.hotel_management.entity.Room;
@@ -15,7 +14,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

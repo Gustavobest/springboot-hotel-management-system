@@ -1,5 +1,4 @@
 package com.gustavo.hotel_management.repository;
-
 import com.gustavo.hotel_management.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

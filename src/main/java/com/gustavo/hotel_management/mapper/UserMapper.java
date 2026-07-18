@@ -1,5 +1,4 @@
 package com.gustavo.hotel_management.mapper;
-
 import com.gustavo.hotel_management.dto.UserResponseDTO;
 import com.gustavo.hotel_management.entity.User;
 

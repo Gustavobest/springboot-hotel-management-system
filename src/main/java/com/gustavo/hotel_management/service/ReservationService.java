@@ -21,11 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @Slf4j
 @Service
 public class ReservationService {

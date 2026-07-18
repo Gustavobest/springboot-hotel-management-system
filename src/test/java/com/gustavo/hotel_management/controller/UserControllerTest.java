@@ -2,7 +2,6 @@ package com.gustavo.hotel_management.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gustavo.hotel_management.dto.UserRequestDTO;
 import com.gustavo.hotel_management.dto.UserResponseDTO;
-import com.gustavo.hotel_management.entity.User;
 import com.gustavo.hotel_management.security.JwtAuthenticationFilter;
 import com.gustavo.hotel_management.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.gustavo.hotel_management.specification;
 
 import com.gustavo.hotel_management.entity.Room;
-import org.springdoc.core.configuration.SpringDocSpecPropertiesConfiguration;
 import org.springframework.data.jpa.domain.Specification;
 
 public class RoomSpecification {

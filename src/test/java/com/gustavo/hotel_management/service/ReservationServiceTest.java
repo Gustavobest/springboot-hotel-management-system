@@ -1,6 +1,6 @@
 package com.gustavo.hotel_management.service;
 
-
+import org.springframework.data.jpa.domain.Specification;
 import com.gustavo.hotel_management.dto.ReservationRequestDTO;
 import com.gustavo.hotel_management.dto.ReservationResponseDTO;
 import com.gustavo.hotel_management.entity.Reservation;
@@ -18,14 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

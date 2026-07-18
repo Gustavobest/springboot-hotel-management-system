@@ -6,7 +6,4 @@ public class RoomNotFoundException extends RuntimeException
     {
         super("Habitacion no encontrada con id : " + id);
     }
-  /*  public InvalidCheckInDateException(){
-        super("La fecha de check-in no puede estar en el pasado");
-    }*/
 }

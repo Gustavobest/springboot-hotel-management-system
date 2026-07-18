@@ -2,7 +2,6 @@ package com.gustavo.hotel_management.security;
 
 import com.gustavo.hotel_management.entity.User;
 import com.gustavo.hotel_management.repository.UserRepository;
-import org.hibernate.mapping.UserDefinedArrayType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

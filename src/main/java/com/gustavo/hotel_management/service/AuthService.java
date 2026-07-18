@@ -1,5 +1,4 @@
 package com.gustavo.hotel_management.service;
-
 import com.gustavo.hotel_management.dto.AuthResponse;
 import com.gustavo.hotel_management.dto.LoginRequest;
 import com.gustavo.hotel_management.entity.User;
