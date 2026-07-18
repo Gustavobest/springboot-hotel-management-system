@@ -47,7 +47,7 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomResponseDTO> editRoom( @PathVariable  Long id , @RequestBody  RoomRequestDTO room)
     {
         RoomResponseDTO roomresponse = roomService.editRoom(id , room);
